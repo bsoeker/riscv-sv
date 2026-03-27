@@ -1,4 +1,6 @@
 package riscv_pkg;
+
+  // ALU Opcodes
   typedef enum logic [3:0] {
     ALU_ADD  = 4'b0000,
     ALU_SUB  = 4'b0001,
@@ -12,15 +14,11 @@ package riscv_pkg;
     ALU_SLTU = 4'b1001   // Set Less Than (Unsigned)
   } alu_op_e;
 
-  typedef struct packed {
-    logic [31:0] data;
-    logic [7:0] strobe;
-    logic last;
-  } axi_beat_t;
+  // Memory addr widths
+  parameter int unsigned ROM_ADDR_WIDTH = 10;
+  parameter int unsigned RAM_ADDR_WIDTH = 10;
 
-  typedef enum logic [1:0] {
-    IDLE,
-    LOAD,
-    PROCESS
-  } state_t;
+  // Regfile
+  parameter int unsigned NUM_REGS = 32;
+
 endpackage
