@@ -1,16 +1,18 @@
 import riscv_pkg::RAM_ADDR_WIDTH;
+
+// Word sized, byte addressable memory
 module ram #(
     parameter int ADDR_WIDTH = RAM_ADDR_WIDTH
 ) (
     input  logic                  clk,
-    input  logic [ADDR_WIDTH+1:0] addr,
+    input  logic [ADDR_WIDTH+1:0] addr,        // byte address
     input  logic                  write_en,
     input  logic [          31:0] write_data,
     input  logic [           3:0] write_mask,
     output logic [          31:0] read_data
 );
 
-  logic [31:0] mem[0:2**ADDR_WIDTH-1] = '{default: 32'h0000_0000};
+  logic [31:0] mem[2**ADDR_WIDTH-1:0] = '{default: 32'h0000_0000};
 
   logic [ADDR_WIDTH-1:0] word_addr;
   assign word_addr = addr[ADDR_WIDTH+1:2];

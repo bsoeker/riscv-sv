@@ -1,5 +1,6 @@
 import riscv_pkg::ROM_ADDR_WIDTH;
 
+// Word sized, byte addressable memory
 module rom #(
     parameter int ADDR_WIDTH = ROM_ADDR_WIDTH
 ) (
@@ -9,7 +10,7 @@ module rom #(
     output logic [          31:0] data_data    // Full 32-bit data
 );
 
-  logic [31:0] rom_array[0:2**ADDR_WIDTH-1];
+  logic [31:0] rom_array[2**ADDR_WIDTH-1:0];
 
   initial begin
     rom_array = '{default: 32'h0000_0000};

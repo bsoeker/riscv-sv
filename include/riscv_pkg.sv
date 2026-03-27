@@ -15,10 +15,25 @@ package riscv_pkg;
   } alu_op_e;
 
   // Memory addr widths
-  parameter int unsigned ROM_ADDR_WIDTH = 10;
-  parameter int unsigned RAM_ADDR_WIDTH = 10;
+  parameter int unsigned ROM_DEPTH = 1024;  // word size, byte size = 4KB
+  parameter int unsigned RAM_DEPTH = 65536;  // word size, byte size = 256KB
+  parameter int unsigned ROM_ADDR_WIDTH = $clog2(ROM_DEPTH);
+  parameter int unsigned RAM_ADDR_WIDTH = $clog2(RAM_DEPTH);
 
   // Regfile
   parameter int unsigned NUM_REGS = 32;
+
+  // Immediate Generator
+  typedef enum logic [2:0] {
+    IMM_I = 3'b000,
+    IMM_S = 3'b001,
+    IMM_B = 3'b010,
+    IMM_U = 3'b011,
+    IMM_J = 3'b100
+  } imm_type_e;
+
+  // Address Decoder 
+  parameter logic [31:0] ROM_BASE = 32'h0000_0000;
+  parameter logic [31:0] RAM_BASE = 32'h1000_0000;
 
 endpackage
