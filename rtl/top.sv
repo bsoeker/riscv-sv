@@ -32,7 +32,7 @@ module top (
   logic zero_flag;
 
   // ── Memory ────────────────────────────────────────────────
-  logic [31:0] ram_read_data, rom_read_data, rom_instr_data, mem_read_data;
+  logic [31:0] ram_read_data, rom_read_data, rom_instr_data, mem_read_data, mem_read_data_latched;
   logic [31:0] loaded_value, store_write_data;
   logic [ROM_ADDR_WIDTH+1:0] rom_addr;
   logic [RAM_ADDR_WIDTH+1:0] ram_addr;
@@ -202,6 +202,14 @@ module top (
       .read_complete(ram_read_complete)
   );
 
+  // ── Memory Read Register ────────────────────────────────────
+  // in order to preserve the read value from the memory we need to latch it
+  always_ff @(posedge clk) begin
+    if (!rst_n) mem_read_data_latched <= '0;
+    else if (mem_read_complete) mem_read_data_latched <= mem_read_data;
+  end
+
+
   assign mem_read_data = mem_read && ram_en ? ram_read_data : 
                          mem_read && rom_en ? rom_read_data : 
                          '0;
@@ -209,7 +217,7 @@ module top (
   load_unit load_unit (
       .funct3      (funct3),
       .byte_offset (byte_offset),
-      .mem_data    (mem_read_data),
+      .mem_data    (mem_read_data_latched),
       .loaded_value(loaded_value)
   );
 
