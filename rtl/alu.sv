@@ -5,7 +5,7 @@ module alu (
     input  logic    [31:0] op_b,
     input  alu_op_e        alu_control,
     output logic    [31:0] result,
-    output logic           zero
+    output logic           zero_flag
 );
 
 
@@ -35,6 +35,6 @@ module alu (
     endcase
   end
 
-  assign zero = (result == '0);
+  assign zero_flag = (result == '0);
 
 endmodule
