@@ -8,9 +8,9 @@ module addr_decoder #(
     output logic              rom_en,
     output logic [ROM_AW+1:0] rom_addr,
     output logic              ram_en,
-    output logic [RAM_AW+1:0] ram_addr,
-    output logic              uart_en,
-    output logic [       1:0] uart_addr
+    output logic [RAM_AW+1:0] ram_addr
+    // output logic              uart_en,
+    // output logic [       1:0] uart_addr
 );
 
   // ROM: 0x00000000 - 0x00000FFF for address width of 10
@@ -22,8 +22,8 @@ module addr_decoder #(
   assign ram_addr = addr[RAM_AW+1:0];
 
   // UART: 0x2000_0000 = UART_TX, 0x2000_0004 = UART Status Bits, 0x2000_0008 = UART_RX
-  assign uart_en = (addr >= UART_BASE) && (addr < UART_BASE + 12);
-  assign uart_addr = addr[3:2];
+  // assign uart_en = (addr >= UART_BASE) && (addr < UART_BASE + 12);
+  // assign uart_addr = addr[3:2];
 
 
 

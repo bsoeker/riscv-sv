@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module uart_tb;
+module tb_uart;
 
   // ── Parameters ──────────────────────────────────────────
   localparam int CLOCK_FREQ = 50_000_000;
