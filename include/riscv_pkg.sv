@@ -7,6 +7,7 @@ package riscv_pkg;
   parameter int RAM_ADDR_WIDTH = $clog2(RAM_DEPTH);
   parameter logic [31:0] ROM_BASE = 32'h0000_0000;
   parameter logic [31:0] RAM_BASE = 32'h1000_0000;
+  parameter logic [31:0] UART_BASE = 32'h2000_0000;
 
   // ── CPU constants ──────────────────────────────────────────
   parameter int XLEN = 32;

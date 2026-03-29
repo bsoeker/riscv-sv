@@ -1,8 +1,10 @@
 import riscv_pkg::*;
 
 module top (
-    input logic clk,
-    input logic rst_n
+    input  logic clk,
+    input  logic rst_n,
+    input  logic rx,
+    output logic tx
 );
 
   // ── PC signals ───────────────────────────────────────────
@@ -31,15 +33,17 @@ module top (
   logic [31:0] alu_input_a, alu_input_b, alu_result;
   logic zero_flag;
 
-  // ── Memory ────────────────────────────────────────────────
+  // ── Memory & MMIO ────────────────────────────────────────────────
   logic [31:0] ram_read_data, rom_read_data, rom_instr_data, mem_read_data, mem_read_data_latched;
   logic [31:0] loaded_value, store_write_data;
   logic [ROM_ADDR_WIDTH+1:0] rom_addr;
   logic [RAM_ADDR_WIDTH+1:0] ram_addr;
   logic [3:0] store_write_mask;
   logic [1:0] byte_offset;
-  logic ram_write_en, ram_read_en, ram_en, rom_en;
+  logic ram_write_en, ram_read_en, ram_en, rom_en, uart_write_en, uart_en;
   logic ram_read_complete;
+  logic [31:0] uart_read_data;
+  logic [1:0] uart_addr;
 
   // ── Control Signals ───────────────────────────────────────
   alu_op_e alu_control;
@@ -101,7 +105,7 @@ module top (
   assign rs2_addr = ir[24:20];
   assign funct7 = ir[31:25];
 
-  assign mem_read_complete = ram_read_complete;
+  assign mem_read_complete = ram_read_complete;  // ram read is not combinational
   // ── Countrol Unit ────────────────────────────────────
   control_unit control_unit (
       .clk              (clk),
@@ -173,11 +177,13 @@ module top (
 
   // ── Address Decoder ────────────────────────────────────
   addr_decoder addr_decoder (
-      .addr    (alu_result),
-      .rom_en  (rom_en),
-      .rom_addr(rom_addr),
-      .ram_en  (ram_en),
-      .ram_addr(ram_addr)
+      .addr     (alu_result),
+      .rom_en   (rom_en),
+      .rom_addr (rom_addr),
+      .ram_en   (ram_en),
+      .ram_addr (ram_addr),
+      .uart_en  (uart_en),
+      .uart_addr(uart_addr)
   );
 
   assign byte_offset = alu_result[1:0];
@@ -214,6 +220,7 @@ module top (
 
   assign mem_read_data = mem_read && ram_en ? ram_read_data : 
                          mem_read && rom_en ? rom_read_data : 
+                         mem_read && uart_en ? uart_read_data :
                          '0;
   // ── Load Unit ────────────────────────────────────
   load_unit load_unit (
@@ -221,6 +228,19 @@ module top (
       .byte_offset (byte_offset),
       .mem_data    (mem_read_data_latched),
       .loaded_value(loaded_value)
+  );
+
+  // ── UART (MMIO) ────────────────────────────────────
+  assign uart_write_en = mem_write && uart_en;
+  uart uart (
+      .clk       (clk),
+      .rst_n     (rst_n),
+      .addr      (uart_addr),
+      .wr_en     (uart_write_en),
+      .write_data(store_write_data),
+      .read_data (uart_read_data),
+      .tx        (tx),
+      .rx        (rx)
   );
 
 
