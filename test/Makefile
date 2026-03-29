@@ -1,6 +1,6 @@
 ASM     = riscv-none-elf-gcc
 OBJCOPY = riscv-none-elf-objcopy
-FLAGS   = -march=rv32i -mabi=ilp32 -nostdlib -nostartfiles -ffreestanding -Ttext=0x00000000
+FLAGS   = -march=rv32i -mabi=ilp32 -nostdlib -nostartfiles -ffreestanding -Ttext=0x00000000 
 
 all: test.hex
 

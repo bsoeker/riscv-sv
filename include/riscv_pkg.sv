@@ -12,6 +12,7 @@ package riscv_pkg;
   parameter int XLEN = 32;
   parameter int NUM_REGS = 32;
   parameter logic [31:0] RESET_PC = 32'h0000_0000;
+  parameter logic [31:0] TRAP_VECTOR = 32'h0000_01b0;  // trap_handler address
 
   // ── ALU opcodes ────────────────────────────────────────────
   typedef enum logic [3:0] {
@@ -63,7 +64,8 @@ package riscv_pkg;
     EXECUTE     = 3'b010,
     MEMORY      = 3'b011,
     MEMORY_WAIT = 3'b100,
-    WRITEBACK   = 3'b101
+    WRITEBACK   = 3'b101,
+    TRAP        = 3'b110
   } state_e;
 
   // ── Control Unit decoded signals ─────────────────────────────────────────────
@@ -77,6 +79,7 @@ package riscv_pkg;
     logic       is_branch;
     logic       is_jal;
     logic       is_jalr;
+    logic       is_trap;
     wb_sel_e    wb_sel;
     imm_type_e  imm_type;
   } decoded_t;

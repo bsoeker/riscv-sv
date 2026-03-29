@@ -38,6 +38,7 @@ module control_unit (
         is_branch: 1'b0,
         is_jal: 1'b0,
         is_jalr: 1'b0,
+        is_trap: 1'b0,
         wb_sel: WB_ALU,
         imm_type: IMM_I
     };
@@ -147,6 +148,10 @@ module control_unit (
 
       7'b0000111: ;  // FENCE / FENCE.I — treated as NOP, safe for single-core
 
+      7'b1110011: begin  // SYSTEM
+        d.is_trap = 1'b1;
+      end
+
       default: ;
     endcase
   end
@@ -189,7 +194,9 @@ module control_unit (
       end
 
       EXECUTE: begin
-        if (d.is_branch) begin
+        if (d.is_trap) begin
+          next_state = TRAP;
+        end else if (d.is_branch) begin
           pc_write_en = 1'b1;
           next_state  = FETCH;
         end else if (d.is_jal || d.is_jalr) begin
@@ -221,6 +228,11 @@ module control_unit (
         reg_write_en = d.reg_write_en;
         pc_write_en  = 1'b1;
         next_state   = FETCH;
+      end
+
+      TRAP: begin
+        pc_write_en = 1'b1;
+        next_state  = FETCH;
       end
 
       default: next_state = FETCH;

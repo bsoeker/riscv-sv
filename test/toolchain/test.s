@@ -173,8 +173,15 @@ bltu_ok:
 bgeu_ok:
     addi x3, x3, 1          # x3 = 9
 
+# ecall:
+#     ecall
 # ── Infinite loop ─────────────────────────────────────────────
+done:
     jal  x0, 0              # loop forever
+
+# ── Trap Handler ─────────────────────────────────────────────
+# trap_handler:
+#     j .
 
 # ── Subroutine ────────────────────────────────────────────────
 subr:

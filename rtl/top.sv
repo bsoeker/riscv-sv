@@ -48,7 +48,7 @@ module top (
   imm_type_e imm_type;
   wb_sel_e wb_sel;
   logic reg_write_en, mem_read, mem_read_complete, mem_write;
-  logic is_branch, is_jal, is_jalr;
+  logic is_branch, is_jal, is_jalr, is_trap;
   logic ir_write_en;
 
 
@@ -67,6 +67,7 @@ module top (
   assign next_pc = is_jalr ? jalr_target : 
                    is_jal ? alu_result :
                    branch_taken ? branch_target : 
+                   is_trap ? TRAP_VECTOR :
                    pc_plus_four;
 
   // ── Program counter ────────────────────────────────────

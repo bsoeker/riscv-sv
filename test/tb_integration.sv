@@ -120,6 +120,10 @@ class riscv_ref_model;
         if (rd != 5'b0) regs[rd] = result;
       end
 
+      7'b1110011: begin  // SYSTEM 
+        next_pc = TRAP_VECTOR;
+      end
+
       default: ;
     endcase
 
