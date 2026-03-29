@@ -261,7 +261,7 @@ module tb_alu;
       .op_b       (op_b),
       .alu_control(alu_control),
       .result     (result),
-      .zero       (zero)
+      .zero_flag  (zero)
   );
 
   // Testbench objects

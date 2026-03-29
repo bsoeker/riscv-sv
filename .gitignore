@@ -5,3 +5,4 @@ project_1/
 .Xil/
 test/test.elf
 test/test.hex
+cover*
