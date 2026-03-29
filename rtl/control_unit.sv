@@ -145,6 +145,8 @@ module control_unit (
         d.imm_type = IMM_U;
       end
 
+      7'b0000111: ;  // FENCE / FENCE.I — treated as NOP, safe for single-core
+
       default: ;
     endcase
   end
