@@ -276,6 +276,18 @@ module tb_top_refmodel;
     @(negedge clk);
     rst_n = 1'b1;
 
+    fork
+      forever begin
+        @(posedge clk);
+        if (dut.is_trap && dut.control_unit.state == EXECUTE)
+          $display("[TRAP] ecall detected at PC=0x%08h", dut.pc);
+      end
+      forever begin
+        @(posedge clk);
+        if (dut.pc_write_en) $display("[RETIRE] PC=0x%08h IR=0x%08h", dut.pc, dut.ir);
+      end
+    join_none
+
     // Run until infinite loop detected —
     // JAL x0, 0 causes PC to stop advancing
     begin
@@ -290,7 +302,8 @@ module tb_top_refmodel;
           stall_count++;
           if (stall_count > 10) begin
             $display("[INFO] Infinite loop at PC=0x%08h — done", dut.pc);
-            break;
+            chk.report();
+            $finish;
           end
         end else begin
           stall_count = 0;

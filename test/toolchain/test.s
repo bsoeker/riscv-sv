@@ -7,7 +7,12 @@
 #   x10 = RAM base address (0x10000000)
 #   x31 = test counter (increments each test)
 # ============================================================
+.section .text
+.global _start
+.global trap_handler
+.global done
 
+_start:
 # ── Setup ────────────────────────────────────────────────────
     lui  x10, 0x10000       # x10 = 0x10000000 (RAM base)
     addi x31, x0, 0         # test counter = 0
@@ -177,11 +182,11 @@ ecall:
     ecall
 # ── Infinite loop ─────────────────────────────────────────────
 done:
-    jal  x0, 0              # loop forever
+    j done
 
 # ── Trap Handler ─────────────────────────────────────────────
 trap_handler:
-    j .
+    j trap_handler
 
 # ── Subroutine ────────────────────────────────────────────────
 subr:

@@ -14,7 +14,7 @@ module rom #(
 
   initial begin
     rom_array = '{default: 32'h0000_0000};
-    $readmemh("test.hex", rom_array);
+    $readmemh("rom.hex", rom_array);
   end
 
   assign instr_data = rom_array[instr_addr[ADDR_WIDTH+1:2]];
