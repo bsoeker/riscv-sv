@@ -19,6 +19,7 @@ module control_unit (
     output imm_type_e        imm_type,
     output logic             is_branch,
     output logic             is_jal,
+    output logic             is_trap,
     output logic             is_jalr
 );
 
@@ -179,6 +180,7 @@ module control_unit (
     imm_type     = d.imm_type;
     is_branch    = d.is_branch;
     is_jal       = d.is_jal;
+    is_trap      = d.is_trap;
     is_jalr      = d.is_jalr;
 
     next_state   = state;

@@ -3,3 +3,5 @@ xvlog*
 project_1/
 .slang/
 .Xil/
+test/test.elf
+test/test.hex

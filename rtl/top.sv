@@ -66,8 +66,8 @@ module top (
       );
   assign next_pc = is_jalr ? jalr_target : 
                    is_jal ? alu_result :
-                   branch_taken ? branch_target : 
                    is_trap ? TRAP_VECTOR :
+                   branch_taken ? branch_target : 
                    pc_plus_four;
 
   // ── Program counter ────────────────────────────────────
@@ -122,6 +122,7 @@ module top (
       .imm_type         (imm_type),
       .is_branch        (is_branch),
       .is_jal           (is_jal),
+      .is_trap          (is_trap),
       .is_jalr          (is_jalr)
   );
 
