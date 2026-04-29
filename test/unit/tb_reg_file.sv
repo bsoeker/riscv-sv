@@ -53,14 +53,14 @@ module tb_reg_file;
   always #5 clk = ~clk;
 
   reg_file dut (
-      .clk      (clk),
-      .rs1_addr (rs1_addr),
-      .rs2_addr (rs2_addr),
-      .rd_addr  (rd_addr),
-      .rd_data  (rd_data),
-      .reg_write(reg_write),
-      .rs1_data (rs1_data),
-      .rs2_data (rs2_data)
+      .clk         (clk),
+      .rs1_addr    (rs1_addr),
+      .rs2_addr    (rs2_addr),
+      .rd_addr     (rd_addr),
+      .rd_data     (rd_data),
+      .reg_write_en(reg_write),
+      .rs1_data    (rs1_data),
+      .rs2_data    (rs2_data)
   );
 
   regfile_checker chk;

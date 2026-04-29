@@ -94,15 +94,15 @@ module top (
   end
 
   // ── Instruction field decode ───────────────────────────
-  assign opcode = ir[6:0];
-  assign rd_addr = ir[11:7];
-  assign funct3 = ir[14:12];
-  assign rs1_addr = ir[19:15];
-  assign rs2_addr = ir[24:20];
   assign funct7 = ir[31:25];
+  assign rs2_addr = ir[24:20];
+  assign rs1_addr = ir[19:15];
+  assign funct3 = ir[14:12];
+  assign rd_addr = ir[11:7];
+  assign opcode = ir[6:0];
 
   assign mem_read_complete = ram_read_complete;  // ram read is not combinational
-  // ── Countrol Unit ────────────────────────────────────
+  // ── Control Unit ────────────────────────────────────
   control_unit control_unit (
       .clk              (clk),
       .rst_n            (rst_n),

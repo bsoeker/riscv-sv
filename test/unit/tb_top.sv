@@ -23,7 +23,7 @@ module tb_top;
     @(negedge clk);  // release on negedge for clean setup
     rst_n = 1'b1;
 
-    repeat (200) @(posedge clk);  // run for 200 cycles
+    repeat (20000) @(posedge clk);  // run for 200 cycles
     $finish;
   end
 
